@@ -13,9 +13,9 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="flex flex-col">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:- mx-8">
-                        <div class="py-2 align-middle inline-block minw-full sm:px-6 lg:px-8">
+                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8 mb-2">
                             <div class="shadow overflow-hidden border-b  border-gray-200 sm:rounded-lg">
-                                <table class="min-w-full divide-y  divide-gray-200">
+                                <table class="min-w-full divide-y  divide-gray-200 mt-2">
                                     <thead class="bg-gray-50">
                                         <tr>
                                             <th scope="col"
@@ -31,7 +31,7 @@
                                                 Image
                                             </th>
                                             <th scope="col" class="relative  px-6 py-3">
-                                                <span class="sronly">Edit</span>
+                                                <span class="sronly">Aksi</span>
                                             </th>
                                         </tr>
                                     </thead>
@@ -55,10 +55,10 @@
                                                         class="h-16 w-16">
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                    
-                                                    <a href="{{ route('post.edit', $post) }}"
-                                                        class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                                    <form action="{{ route('post.destroy', $post) }}" method="POST">
+
+                                                    <x-link href="{{ route('post.edit', $post) }}">Edit</x-link>
+                                                    <form action="{{ route('post.destroy', $post) }}" method="POST"
+                                                        class="mt-1">
                                                         @csrf
                                                         @method('DELETE')
                                                         <x-danger-button
