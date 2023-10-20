@@ -11,17 +11,40 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <form action="{{ route('post.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+
                         <div class="mb-2">
                             <x-input-label value="Title" />
                             <x-text-input name="title" placeholder="Title" />
+                            @error('title')
+                                <x-input-error :messages='$message'></x-input-error>
+                            @enderror
+                        </div>
+                        <div class="mb-2">
+                            <x-input-label value="Category" />
+                            <select name="category_id"
+                                class="flex items-centerrelative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label">
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->category }}</option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
+                                <x-input-error :messages='$message'></x-input-error>
+                            @enderror
                         </div>
                         <div class="mb-2">
                             <x-input-label value="Body" />
                             <x-textarea variants="grey" name="body" rows="5" cols="100" />
+                            @error('body')
+                                <x-input-error :messages='$message'></x-input-error>
+                            @enderror
                         </div>
                         <div class="mb-2">
                             <x-input-label value="Image" />
                             <x-text-input type="file" name="image" />
+                            @error('image')
+                                <x-input-error :messages='$message'></x-input-error>
+                            @enderror
                         </div>
                         <div class="mb-2">
                             <x-primary-button type="submit">Simpan</x-primary-button>

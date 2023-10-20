@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,7 @@ class PostController extends Controller
     public function index()
     {
         return view('post.index', [
-            'posts' => Post::where('user_id', auth()->id())->get(),
+            'posts' => Post::with(['category'])->where('user_id', auth()->id())->get(),
         ]);
     }
 
@@ -28,7 +29,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('post.create');
+        $categories = Category::get();
+        return view('post.create', compact('categories'));
     }
 
     /**
@@ -40,6 +42,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'category_id' => ['required'],
             'title' => ['required'],
             'image' => ['required', 'image'],
             'body' => ['required', 'min:20'],
@@ -47,6 +50,7 @@ class PostController extends Controller
 
         Post::create([
             'user_id' => auth()->id(),
+            'category_id' => $request->category_id,
             'title' => $request->title,
             'image' => $request->file('image')->store('post/image'),
             'body' => $request->body,
@@ -74,7 +78,8 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        return view('post.edit', [
+        $categories = Category::get();
+        return view('post.edit', compact('categories'), [
             'post' => Post::find($id), //untuk mengambil data Post sesui dengan id yang diterima
         ]);
     }
@@ -90,24 +95,26 @@ class PostController extends Controller
     {
         $this->validate($request, [
             'title' => ['required'],
+            'category_id' => ['required'],
             'body' => ['required', 'min:20'],
         ]);
 
         $post = Post::find($id);
         $image = $post->image; //membuat variabel $image dengan nilai adalah image lama data yang diubah
 
-        if($request->hasFile('image')){ // mengecek jika request memiliki file pada field image, jika tidak ada file maka operasi didalam ini tidak akan diekseskusi
+        if ($request->hasFile('image')) { // mengecek jika request memiliki file pada field image, jika tidak ada file maka operasi didalam ini tidak akan diekseskusi
             Storage::delete($image); // digunakan menghapus file lama karena tidak akan digunakan lagi, memanfaatkan variabel $image yang berisi path file sebelumnya
             $image = $request->file('image')->store('post/image/'); // mengoverride variabel $image dengan file baru yang diupload dan digunakan untuk mengupdate data.
         };
 
         $post->update([
-            'title' => $request -> title,
+            'title' => $request->title,
+            'category_id' => $request->category_id,
             'image' => $image,
             'body' => $request->body,
         ]);
 
-        return redirect()-> route('post');
+        return redirect()->route('post');
     }
 
     /**

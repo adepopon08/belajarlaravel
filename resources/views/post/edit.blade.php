@@ -21,6 +21,19 @@
                             @enderror
                         </div>
                         <div class="mb-2">
+                            <x-input-label value="Title" />
+                            <select name="category_id"
+                                class="flex items-centerrelative cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                                @foreach ($categories as $category)
+                                    <option @selected($category->id == $post->category_id) value="{{ $category->id }}">
+                                        {{ $category->category }}</option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
+                                <x-input-error :messages='$message'></x-input-error>
+                            @enderror
+                        </div>
+                        <div class="mb-2">
                             <x-input-label value="Image" />
                             <input type="file" name="image"
                                 class="w-full form-input rounded-md

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -40,5 +41,13 @@ Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('post.dest
 // penyederhanaan route dengan menggunakan method resource()
 //Route::resource('post', PostController::class);
 
+// Route Category
+Route::get('/category', [CategoryController::class, 'index'])->name('category');
+Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
+Route::post('/category', [CategoryController::class, 'store'])->name('category.store');
+Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');
+Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('category.edit');
+Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
+Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
 require __DIR__ . '/auth.php';
